@@ -1,0 +1,136 @@
+---
+import "../styles/global.css";
+import { ViewTransitions } from "astro:transitions";
+
+interface Props {
+  title: string;
+  description?: string;
+  noIndex?: boolean;
+  pageType?: "website" | "profile" | "article";
+}
+
+const {
+  title,
+  description = "Purushotham Sirasapalli · CS + Math at University at Buffalo. Robotics and systems researcher.",
+  noIndex = false,
+  pageType = "website",
+} = Astro.props;
+const path = Astro.url.pathname.replace(/\/$/, "") || "/";
+const isActive = (href: string) =>
+  href === "/" ? path === "/" : path === href || path.startsWith(href + "/");
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="author" content="Purushotham Sirasapalli" />
+    <meta name="theme-color" content="#fbfaf7" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0f1014" media="(prefers-color-scheme: dark)" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content={pageType} />
+    {pageType === "profile" && (
+      <>
+        <meta property="profile:first_name" content="Purushotham" />
+        <meta property="profile:last_name" content="Sirasapalli" />
+        <meta property="profile:username" content="purushotham91" />
+      </>
+    )}
+    <meta property="og:url" content={Astro.url.href} />
+    <meta property="og:site_name" content="Purushotham Sirasapalli" />
+    <meta property="og:image" content={new URL("/og-image.jpg", Astro.site)} />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1000" />
+    <meta property="og:image:height" content="525" />
+    <meta property="og:image:alt" content="Purushotham Sirasapalli, robotics and systems researcher, available June 2026" />
+    <meta property="og:locale" content="en_US" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={new URL("/og-image.jpg", Astro.site)} />
+    {noIndex && <meta name="robots" content="noindex, nofollow" />}
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    {!noIndex && <link rel="canonical" href={Astro.url.href} />}
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <title>{title}</title>
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "Person",
+        name: "Purushotham Sirasapalli",
+        givenName: "Purushotham",
+        familyName: "Sirasapalli",
+        url: "https://purusirasapalli.com",
+        email: "purusirasap@gmail.com",
+        jobTitle: "Robotics and Systems Researcher",
+        alumniOf: {
+          "@type": "CollegeOrUniversity",
+          name: "University at Buffalo",
+        },
+        sameAs: [
+          "https://github.com/purushotham91",
+          "https://gitlab.com/puru_s",
+          "https://linkedin.com/in/puru-sirasapalli",
+        ],
+        knowsAbout: [
+          "C++",
+          "Low-latency systems",
+          "Bioinformatics",
+          "FM-Index",
+          "Metagenomics",
+          "Robotics",
+          "ROS 2",
+          "Reinforcement Learning",
+          "Bayesian Optimization",
+          "Gaussian Processes",
+        ],
+      })}
+    />
+    <ViewTransitions />
+  </head>
+  <body>
+    <a href="#content" class="skip-link">skip to content</a>
+    <div class="page">
+      <header class="site-header">
+        <nav class="site" aria-label="Primary">
+          <a
+            href="/"
+            class="home"
+            aria-current={isActive("/") ? "page" : undefined}
+            >purushotham sirasapalli</a
+          >
+          <span class="spacer"></span>
+          <a
+            href="/projects"
+            aria-current={isActive("/projects") ? "page" : undefined}
+            >projects</a
+          >
+          <a href="/resume.pdf" target="_blank" rel="noopener">cv</a>
+          <a
+            href="/contact"
+            aria-current={isActive("/contact") ? "page" : undefined}
+            >contact</a
+          >
+        </nav>
+      </header>
+      <main id="content">
+        <slot />
+      </main>
+      <footer class="site">
+        <span>&copy; {new Date().getFullYear()} Purushotham Sirasapalli</span>
+        <span>
+          <a href="https://github.com/purushotham91">github</a> ·
+          <a href="https://gitlab.com/puru_s">gitlab</a> ·
+          <a href="mailto:purusirasap@gmail.com">email</a> ·
+          <a href="https://github.com/purushotham91/personal_website"
+            >view source</a
+          >
+        </span>
+      </footer>
+    </div>
+  </body>
+</html>

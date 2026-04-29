@@ -1,0 +1,44 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { getCollection } from "astro:content";
+import { projectBlurb, statusLabel } from "../../lib/projects";
+
+const projects = (await getCollection("projects")).sort(
+  (a, b) => (a.data.order ?? 99) - (b.data.order ?? 99),
+);
+---
+
+<Layout
+  title="Projects · Purushotham Sirasapalli"
+  description="Selected work in low-latency systems, bioinformatics indexing, and robotics: SKiM, Coriolis-Lite, IROS 2026 submission, Coriolis, SKiMet, RL aerial-target tracking."
+>
+  <h1>Projects</h1>
+
+  <p class="lede">
+    Things I've built or contributed to. Each links to a longer write-up
+    with technical details.
+  </p>
+
+  <ul class="project-list">
+    {
+      projects.map((p) => (
+        <li>
+          <div class="row">
+            <a href={`/projects/${p.slug}`}>{p.data.title}</a>
+            <span class="meta">
+              {p.data.role} · {statusLabel[p.data.status]}
+            </span>
+          </div>
+          <p class="desc">{projectBlurb[p.slug] ?? ""}</p>
+          {p.data.stack && (
+            <ul class="stack">
+              {p.data.stack.map((t) => (
+                <li>{t}</li>
+              ))}
+            </ul>
+          )}
+        </li>
+      ))
+    }
+  </ul>
+</Layout>

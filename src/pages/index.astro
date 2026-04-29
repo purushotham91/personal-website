@@ -1,0 +1,106 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { getCollection } from "astro:content";
+import { projectBlurb, statusLabel, headlineStats } from "../lib/projects";
+
+const projects = (await getCollection("projects")).sort(
+  (a, b) => (a.data.order ?? 99) - (b.data.order ?? 99),
+);
+---
+
+<Layout title="Purushotham Sirasapalli" pageType="profile">
+  <span class="pill-available">open to roles · available june 2026</span>
+
+  <h1>Purushotham Sirasapalli</h1>
+
+  <p class="lede">
+    CS + Math at the University at Buffalo. Robotics and systems researcher.
+    Graduating May 2026.
+  </p>
+
+  <p>
+    I build systems that push computation to the edge: from a
+    metagenomic classifier that indexes the full Archaeal, Bacterial,
+    Fungal, and Viral NCBI catalogs (17&nbsp;GB on disk) and classifies
+    in 800&nbsp;MB of RAM, to decentralized swarm robots localizing
+    signal sources without a central coordinator. I care about making
+    algorithms work under real hardware constraints. Open to new-grad
+    roles in SWE, robotics, performance engineering, or HFT.
+  </p>
+
+  <div class="cta-row">
+    <a class="cta cta-primary" href="mailto:purusirasap@gmail.com">
+      get in touch
+    </a>
+    <a class="cta" href="/resume.pdf" target="_blank" rel="noopener">
+      resume (pdf)
+    </a>
+    <a class="cta" href="/projects">browse projects</a>
+  </div>
+
+  <p class="now">
+    <span class="now-label">Now</span> Building SKiMet's gRPC server/client
+    framework · awaiting IROS 2026 review · open to new-grad roles
+    starting June 2026.
+  </p>
+
+  <ul class="stats">
+    {
+      headlineStats.map((s) => (
+        <li>
+          <span class="value">{s.value}</span>
+          <span class="label">{s.label}</span>
+        </li>
+      ))
+    }
+  </ul>
+
+  <h2>Selected work</h2>
+
+  <ul class="project-list">
+    {
+      projects.map((p) => (
+        <li>
+          <div class="row">
+            <a href={`/projects/${p.slug}`}>{p.data.title}</a>
+            <span class="meta">
+              {p.data.role} · {statusLabel[p.data.status]}
+            </span>
+          </div>
+          <p class="desc">{projectBlurb[p.slug] ?? ""}</p>
+          {p.data.stack && (
+            <ul class="stack">
+              {p.data.stack.map((t) => (
+                <li>{t}</li>
+              ))}
+            </ul>
+          )}
+        </li>
+      ))
+    }
+  </ul>
+
+  <h2>Contact</h2>
+  <ul class="link-rows">
+    <li>
+      <span class="label">Email</span>
+      <a href="mailto:purusirasap@gmail.com">purusirasap@gmail.com</a>
+    </li>
+    <li>
+      <span class="label">GitHub</span>
+      <a href="https://github.com/purushotham91"
+        >github.com/purushotham91</a
+      >
+    </li>
+    <li>
+      <span class="label">GitLab</span>
+      <a href="https://gitlab.com/puru_s">gitlab.com/puru_s</a>
+    </li>
+    <li>
+      <span class="label">LinkedIn</span>
+      <a href="https://linkedin.com/in/puru-sirasapalli"
+        >linkedin.com/in/puru-sirasapalli</a
+      >
+    </li>
+  </ul>
+</Layout>

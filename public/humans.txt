@@ -1,0 +1,16 @@
+/* TEAM */
+  Builder: Purushotham Sirasapalli
+  Contact: purusirasap [at] gmail.com
+  GitHub: @purushotham91
+  GitLab: @puru_s
+  LinkedIn: /in/puru-sirasapalli
+  Location: Buffalo, NY · USA
+
+/* SITE */
+  Built with: Astro
+  Hosted on: Cloudflare Pages
+  Source: github.com/purushotham91/personal_website
+  Last update: 2026/04
+  Standards: HTML5, CSS3
+  Components: hand-rolled
+  Software: VS Code, vim

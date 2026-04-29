@@ -1,0 +1,67 @@
+---
+import { getCollection, type CollectionEntry } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import { statusLabel, projectBlurb } from "../../lib/projects";
+
+export async function getStaticPaths() {
+  const projects = (await getCollection("projects")).sort(
+    (a, b) => (a.data.order ?? 99) - (b.data.order ?? 99),
+  );
+  return projects.map((project, i) => ({
+    params: { slug: project.slug },
+    props: {
+      project,
+      prev: i > 0 ? projects[i - 1] : null,
+      next: i < projects.length - 1 ? projects[i + 1] : null,
+    },
+  }));
+}
+
+interface Props {
+  project: CollectionEntry<"projects">;
+  prev: CollectionEntry<"projects"> | null;
+  next: CollectionEntry<"projects"> | null;
+}
+
+const { project, prev, next } = Astro.props;
+const { Content } = await project.render();
+const statusClass = `status-${project.data.status}`;
+const ogDescription =
+  projectBlurb[project.slug] ??
+  `${project.data.title}: ${project.data.role}, ${statusLabel[project.data.status]}.`;
+---
+
+<Layout
+  title={`${project.data.title} · Purushotham Sirasapalli`}
+  description={ogDescription}
+  pageType="article"
+>
+  <p class="project-header">
+    <a href="/projects" class="back">← projects</a>
+    <span class="sep">/</span>
+    <span class={`tag ${statusClass}`}>{statusLabel[project.data.status]}</span>
+    <span class="tag">{project.data.role}</span>
+  </p>
+  <article>
+    <Content />
+  </article>
+
+  <nav class="project-nav" aria-label="Adjacent projects">
+    {
+      prev && (
+        <a href={`/projects/${prev.slug}`} class="prev">
+          <span class="dir">← previous</span>
+          <span class="name">{prev.data.title}</span>
+        </a>
+      )
+    }
+    {
+      next && (
+        <a href={`/projects/${next.slug}`} class="next">
+          <span class="dir">next →</span>
+          <span class="name">{next.data.title}</span>
+        </a>
+      )
+    }
+  </nav>
+</Layout>
