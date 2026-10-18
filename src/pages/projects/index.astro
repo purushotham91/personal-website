@@ -1,32 +1,23 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-import { getCollection } from "astro:content";
-import { projectBlurb, statusLabel } from "../../lib/projects";
+import Row from "../../components/Row.astro";
+import { getProjects } from "../../lib/projects";
 
-const projects = (await getCollection("projects")).sort(
-  (a, b) => (a.data.order ?? 99) - (b.data.order ?? 99),
-);
+const projects = await getProjects();
 ---
 
 <Layout
   title="Projects · Purushotham Sirasapalli"
-  description="Performance and systems work: SKiM's Rust caching layer (6× faster, 80% less RAM), a decentralized robot swarm, RL aerial tracking, Coriolis-Lite, SKiMet."
+  description="Systems and robotics projects: SKiM's Rust caching layer (6× faster, 80% less memory), a decentralized robot swarm, RL aerial tracking, Coriolis-Lite, SKiMet."
 >
-  <h1>Projects</h1>
-  <p class="lede">
-    Each write-up covers the constraint, what I built, and how I measured it.
-  </p>
+  <section class="hero">
+    <h1>Projects</h1>
+    <p class="lede">Systems, performance, and robotics work from the SCoRe and ADAMS labs.</p>
+  </section>
 
-  <ul class="projects">
+  <ul class="rows">
     {projects.map((p) => (
-      <li>
-        <a class="card" href={`/projects/${p.slug}`}>
-          <h3>{p.data.title}</h3>
-          <p class="meta">{p.data.role} · {statusLabel[p.data.status]}</p>
-          <p>{projectBlurb[p.slug] ?? ""}</p>
-          {p.data.stack && <ul class="tags">{p.data.stack.map((t) => <li>{t}</li>)}</ul>}
-        </a>
-      </li>
+      <Row href={`/projects/${p.slug}`} title={p.data.title} sub={p.data.summary} meta={p.data.tech} />
     ))}
   </ul>
 </Layout>

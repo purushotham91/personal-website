@@ -1,12 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <style>
-    rect { fill: #fbfaf7; }
-    text { fill: #1f3b73; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-weight: 700; }
-    @media (prefers-color-scheme: dark) {
-      rect { fill: #0f1014; }
-      text { fill: #9bb5ff; }
-    }
-  </style>
-  <rect width="64" height="64" rx="10"/>
-  <text x="50%" y="50%" text-anchor="middle" dominant-baseline="central" font-size="34" letter-spacing="-1">ps</text>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><style>rect{fill:#18181b}text{fill:#fdfdfc}@media (prefers-color-scheme:dark){rect{fill:#ededef}text{fill:#0e0e10}}</style><rect width="64" height="64" rx="16"/><text x="32" y="33" text-anchor="middle" dominant-baseline="central" font-family="Inter,system-ui,sans-serif" font-size="26" font-weight="700">PS</text></svg>

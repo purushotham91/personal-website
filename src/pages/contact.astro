@@ -1,5 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import Row from "../components/Row.astro";
 import { links } from "../lib/profile";
 ---
 
@@ -7,25 +8,31 @@ import { links } from "../lib/profile";
   title="Contact · Purushotham Sirasapalli"
   description="Email, LinkedIn, GitHub, and GitLab for Purushotham Sirasapalli. Open to full-time systems, embedded, performance, robotics, and ML infra roles."
 >
-  <h1>Contact</h1>
-  <p class="lede">
-    Email is the fastest way to reach me. If you're a recruiter or hiring
-    manager, putting the role title in the subject line helps.
-  </p>
+  <section class="hero">
+    <h1>Contact</h1>
+    <p class="lede">Email is the fastest way to reach me.</p>
+    <div class="actions">
+      <a class="btn primary" href={`mailto:${links.email}`}>Email me</a>
+      <a class="btn" href={links.resume}>Resume</a>
+    </div>
+  </section>
 
-  <ul class="rows">
-    <li><span>Email</span><a href={`mailto:${links.email}`}>{links.email}</a></li>
-    <li><span>LinkedIn</span><a href={links.linkedin}>linkedin.com/in/puru-sirasapalli</a></li>
-    <li><span>GitHub</span><a href={links.github}>github.com/purushotham91</a></li>
-    <li><span>GitLab</span><a href={links.gitlab}>gitlab.com/puru_s</a></li>
-    <li><span>Resume</span><a href={links.resume}>PDF, one page</a></li>
-  </ul>
+  <section>
+    <h2>Links</h2>
+    <ul class="rows">
+      <Row href={`mailto:${links.email}`} title="Email" sub={links.email} />
+      <Row href={links.linkedin} title="LinkedIn" sub="linkedin.com/in/puru-sirasapalli" />
+      <Row href={links.github} title="GitHub" sub="github.com/purushotham91" />
+      <Row href={links.gitlab} title="GitLab" sub="gitlab.com/puru_s" />
+    </ul>
+  </section>
 
-  <h2>What I'm looking for</h2>
-  <p>
-    Full-time new-grad engineering roles in systems, embedded, performance,
-    robotics/autonomy, or ML infrastructure. I can start now and I'm open to
-    relocating or working remotely. Preferred: New York, Boston, Buffalo, or
-    remote (US).
-  </p>
+  <section>
+    <h2>Open to</h2>
+    <ul class="rows">
+      <Row title="Roles" sub="Full-time: systems, embedded, performance, robotics, ML infrastructure" />
+      <Row title="Location" sub="New York, Boston, Buffalo, or remote. Open to relocation." />
+      <Row title="Start" sub="Available now" />
+    </ul>
+  </section>
 </Layout>

@@ -11,12 +11,12 @@ interface Props {
 
 const {
   title,
-  description = "Purushotham Sirasapalli: software engineer for systems, robotics, and performance-critical code. 6× faster caching in Rust, robot swarms on Raspberry Pi, RL control at 10 m/s.",
+  description = "Purushotham Sirasapalli, software engineer. Rust and C++ systems, robotics, and on-device ML. 6× faster caching in Rust, robot swarms on Raspberry Pi, RL control at 10 m/s.",
   noIndex = false,
   pageType = "website",
 } = Astro.props;
 const path = Astro.url.pathname.replace(/\/$/, "") || "/";
-const isActive = (href: string) => path === href || path.startsWith(href + "/");
+const current = (href: string) => (path === href || path.startsWith(href + "/") ? "page" : undefined);
 const og = new URL("/og-image.jpg", Astro.site);
 ---
 
@@ -27,8 +27,8 @@ const og = new URL("/og-image.jpg", Astro.site);
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <meta name="theme-color" content="#fcfcfa" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#0d0e11" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#fdfdfc" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0e0e10" media="(prefers-color-scheme: dark)" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content={pageType} />
@@ -51,7 +51,7 @@ const og = new URL("/og-image.jpg", Astro.site);
           jobTitle: "Software Engineer",
           alumniOf: { "@type": "CollegeOrUniversity", name: "University at Buffalo" },
           sameAs: [links.github, links.gitlab, links.linkedin],
-          knowsAbout: ["C++", "Rust", "Performance engineering", "Systems programming", "Embedded systems", "ROS 2", "Reinforcement learning", "Gaussian processes"],
+          knowsAbout: ["C++", "Rust", "Performance engineering", "Systems programming", "Embedded systems", "ROS 2", "Reinforcement learning"],
         })}
       />
     )}
@@ -59,22 +59,27 @@ const og = new URL("/og-image.jpg", Astro.site);
   <body>
     <a href="#content" class="skip">Skip to content</a>
     <div class="page">
-      <nav class="site" aria-label="Primary">
-        <a href="/" class="home" aria-current={path === "/" ? "page" : undefined}><span class="full">purushotham </span>sirasapalli</a>
-        <a href="/projects" aria-current={isActive("/projects") ? "page" : undefined}>projects</a>
-        <a href={links.resume}>resume</a>
-        <a href="/contact" aria-current={isActive("/contact") ? "page" : undefined}>contact</a>
-      </nav>
+      <header class="top">
+        <a href="/" class="brand" aria-label="Purushotham Sirasapalli, home">
+          <span class="mark" aria-hidden="true">PS</span>
+          <span class="brand-name">Purushotham Sirasapalli</span>
+        </a>
+        <nav aria-label="Primary">
+          <a href="/projects" aria-current={current("/projects")}>Projects</a>
+          <a href={links.resume}>Resume</a>
+          <a href="/contact" aria-current={current("/contact")}>Contact</a>
+        </nav>
+      </header>
       <main id="content">
         <slot />
       </main>
-      <footer class="site">
+      <footer class="bottom">
         <span>© {new Date().getFullYear()} Purushotham Sirasapalli</span>
-        <span>
-          <a href={links.github}>github</a> · <a href={links.gitlab}>gitlab</a> ·
-          <a href={links.linkedin}>linkedin</a> ·
-          <a href="https://github.com/purushotham91/personal-website">source</a>
-        </span>
+        <nav aria-label="Elsewhere">
+          <a href={links.github}>GitHub</a>
+          <a href={links.gitlab}>GitLab</a>
+          <a href={links.linkedin}>LinkedIn</a>
+        </nav>
       </footer>
     </div>
   </body>

@@ -1,0 +1,22 @@
+---
+// The one list item used everywhere: title, optional subtitle, optional right-aligned meta.
+interface Props {
+  title: string;
+  sub?: string;
+  meta?: string;
+  href?: string;
+}
+
+const { title, sub, meta, href } = Astro.props;
+const Tag = href ? "a" : "div";
+---
+
+<li>
+  <Tag class="row" href={href}>
+    <span class="row-main">
+      <span class="row-title">{title}</span>
+      {sub && <span class="row-sub">{sub}</span>}
+    </span>
+    {meta && <span class="row-meta">{meta}</span>}
+  </Tag>
+</li>

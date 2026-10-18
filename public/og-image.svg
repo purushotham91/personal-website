@@ -1,17 +1,18 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
-  <rect width="1200" height="630" fill="#0d0e11"/>
-  <g font-family="DejaVu Sans Mono, ui-monospace, Menlo, monospace">
-    <text x="80" y="110" fill="#9a9aa6" font-size="22" letter-spacing="4">PURUSIRASAPALLI.COM</text>
-    <text x="80" y="330" fill="#6cb2ff" font-size="30">Systems · performance · robotics</text>
-    <text x="80" y="565" fill="#4fcf8a" font-size="22" letter-spacing="2">● OPEN TO FULL-TIME ROLES · AVAILABLE NOW</text>
-  </g>
-  <text x="80" y="245" fill="#e8e8ea" font-family="DejaVu Sans, system-ui, sans-serif" font-size="78" font-weight="700" letter-spacing="-2">Purushotham Sirasapalli</text>
-  <g font-family="DejaVu Sans Mono, ui-monospace, Menlo, monospace" fill="#e8e8ea">
-    <text x="80" y="450" font-size="56" font-weight="700">6×</text>
-    <text x="80" y="488" fill="#9a9aa6" font-size="20">faster caching</text>
-    <text x="340" y="450" font-size="56" font-weight="700">−80%</text>
-    <text x="340" y="488" fill="#9a9aa6" font-size="20">RAM, 4 GB → 800 MB</text>
-    <text x="660" y="450" font-size="56" font-weight="700">10 m/s</text>
-    <text x="660" y="488" fill="#9a9aa6" font-size="20">RL tracking, 5× PID</text>
+  <rect width="1200" height="630" fill="#fdfdfc"/>
+  <g font-family="Inter, system-ui, sans-serif">
+    <rect x="96" y="96" width="64" height="64" rx="16" fill="#18181b"/>
+    <text x="128" y="137" text-anchor="middle" fill="#fdfdfc" font-size="26" font-weight="700">PS</text>
+    <text x="96" y="292" fill="#18181b" font-size="76" font-weight="700" letter-spacing="-2">Purushotham Sirasapalli</text>
+    <text x="96" y="352" fill="#6b6b73" font-size="32">Software engineer · systems, performance, robotics</text>
+    <rect x="96" y="410" width="1008" height="128" rx="20" fill="#f4f4f3"/>
+    <g fill="#18181b" font-size="44" font-weight="700">
+      <text x="136" y="475">6×</text><text x="388" y="475">80%</text><text x="640" y="475">10 m/s</text><text x="892" y="475">83%</text>
+    </g>
+    <g fill="#6b6b73" font-size="21">
+      <text x="136" y="510">faster Rust cache</text><text x="388" y="510">less memory</text><text x="640" y="510">RL tracking speed</text><text x="892" y="510">swarm success</text>
+    </g>
+    <circle cx="104" cy="583" r="7" fill="#16a34a"/>
+    <text x="122" y="590" fill="#6b6b73" font-size="21">Available now · purusirasapalli.com</text>
   </g>
 </svg>

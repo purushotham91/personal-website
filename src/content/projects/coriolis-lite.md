@@ -1,54 +1,27 @@
 ---
 title: Coriolis-Lite
+summary: C++ DNA search on compressed indexes, built for phones and edge devices.
+tech: C++20
 status: shipped
 role: Primary author
 order: 4
-stack: ["C++20", "sdsl-lite", "FM-Index", "DNAsbt", "CMake", "ARM + x86"]
+stack: ["C++20", "sdsl-lite", "FM-index", "CMake", "x86 + ARM"]
+links:
+  - { label: "GitLab", href: "https://gitlab.com/SCoRe-Group/smarten/-/tree/master/coriolis-lite" }
+  - { label: "NSF award", href: "https://www.nsf.gov/awardsearch/showAward?AWD_ID=1910193" }
 ---
 
-# Coriolis-Lite
+## Problem
 
-A lightweight C++20 metagenomic classifier: the FM-Index-backed sibling
-of [Coriolis](/projects/coriolis). Built on
-[sdsl-lite](https://github.com/simongog/sdsl-lite) for compressed succinct
-indexing. Targets mobile and edge devices where RAM and storage are tight.
-NSF-supported under award [CNS-1910193](https://www.nsf.gov/awardsearch/showAward?AWD_ID=1910193).
+Most DNA classifiers assume a server with tens of gigabytes of memory.
+Coriolis-Lite targets phones and Jetson-class boards, where sending data
+to a server isn't an option.
 
-## What it does
+## What I built
 
-Coriolis-Lite classifies sequencing reads against a reference index of
-microbial genomes. Input is FASTA / FASTQ; output is a per-read taxonomic
-assignment in a Centrifuge-compatible format, so it can drop into
-existing pipelines unchanged. The FM-Index gives O(m) substring queries
-on a compressed representation of the reference, so the classifier fits
-in dramatically less memory than suffix-array or hash-based alternatives.
+- Exact-match search over an FM-index: a compressed text index that
+  answers substring queries without decompressing (built on sdsl-lite).
+- Output compatible with Centrifuge, so it drops into existing pipelines.
+- Builds for x86 and ARM, including NVIDIA Jetson.
 
-## Why it exists
-
-Most metagenomic classifiers assume a server-class machine with tens to
-hundreds of GB of RAM. Coriolis-Lite targets the opposite end: phones,
-NVIDIA Jetson-class boards, MinION-attached devices, where sending data
-back to a server isn't an option. Memory efficiency is the primary
-constraint; FM-Index over sdsl-lite is the right primitive because it
-keeps the index in compressed succinct form while preserving fast
-substring queries.
-
-## Stack
-
-C++20, sdsl-lite, libdivsufsort, Boost.Iostreams, LZ4, spdlog, DNAsbt.
-CMake build. Linux, x86\_64 + ARM (Jetson via JetPack 5.x).
-
-## Co-authors
-
-Purushotham Sirasapalli (primary), Vatsal Labh, Chris Chen, Paridhi
-Desai, Troy Richardson.
-
-## Status
-
-Shipped and used within the SCORE Lab metagenomics pipeline as
-the FM-Index-based companion to Coriolis.
-
-## Links
-
-- [GitLab · Coriolis-Lite](https://gitlab.com/SCoRe-Group/smarten/-/tree/master/coriolis-lite)
-- [NSF award CNS-1910193](https://www.nsf.gov/awardsearch/showAward?AWD_ID=1910193)
+Supported by NSF award CNS-1910193.

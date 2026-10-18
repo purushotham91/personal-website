@@ -2,11 +2,13 @@
 import Layout from "../layouts/Layout.astro";
 ---
 
-<Layout title="404 · Not Found" noIndex={true}>
-  <h1>404</h1>
-  <pre><code>$ ls /
-projects  contact  resume.pdf
-$ cat ./this-page
-cat: No such file or directory</code></pre>
-  <p>Try the <a href="/">home page</a> or the <a href="/projects">projects</a>.</p>
+<Layout title="Not found · Purushotham Sirasapalli" noIndex={true}>
+  <section class="hero">
+    <h1>Page not found</h1>
+    <p class="lede">This page doesn't exist, or it moved.</p>
+    <div class="actions">
+      <a class="btn primary" href="/">Home</a>
+      <a class="btn" href="/projects">Projects</a>
+    </div>
+  </section>
 </Layout>

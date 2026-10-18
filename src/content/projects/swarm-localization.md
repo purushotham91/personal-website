@@ -1,62 +1,35 @@
 ---
-title: Decentralized Swarm Source Localization
+title: Swarm Source Localization
+summary: Robots that find a radio source together, with no central coordinator.
+tech: ROS 2
 status: shipped
 role: Lead developer
 order: 2
-stack: ["ROS 2 Humble", "Python", "PyTorch", "Gazebo", "TurtleBot3", "Raspberry Pi 4", "LoRa", "Bayesian Optimization", "Gaussian Processes"]
+stack: ["ROS 2 Humble", "Python", "PyTorch", "Gazebo", "TurtleBot3", "Raspberry Pi 4", "LoRa"]
+results:
+  - { value: "83%", label: "success, 99 real runs" }
+  - { value: "4", label: "physical robots" }
+  - { value: "50", label: "simulated agents" }
 ---
 
-# Decentralized Swarm Source Localization
+## Problem
 
-A swarm of ground robots that finds a radio-frequency source with no
-central coordinator. Each robot decides where to go next from its own
-measurements plus what its neighbors share. Built in the ADAMS Lab at
-the University at Buffalo.
-
-## Results
-
-- **4 physical TurtleBot3 robots**, validated with up to **50 simulated
-  agents** in Gazebo.
-- **83% mission success across 99 physical experiments.**
-- Within mission time on **183 of 194** held-out simulated scenarios.
-- On-robot inference cut from **3–4 minutes to a few seconds** on a
-  Raspberry Pi 4.
-
-## How it works
-
-Each robot keeps a local Gaussian-Process model of the signal field and
-runs Bayesian Optimization to pick its next waypoint. Robots share
-posterior updates with neighbors over a noisy channel, so the swarm
-converges on the source without any robot seeing the whole picture.
-
-GP inference was the bottleneck: on a Raspberry Pi it took minutes per
-step, which is useless for a moving robot. I trained a small neural
-network that compresses raw sensor observations down to 100
-representative points before they reach the GP. Accuracy held, and
-inference dropped to a few seconds, which made real-time decentralized
-tracking possible on the hardware we actually had.
+Each robot decides where to move using only its own radio readings and
+what nearby robots share. The model behind that decision, a Gaussian
+Process, took 3–4 minutes per update on a Raspberry Pi 4. Far too slow
+for a robot that's moving.
 
 ## What I built
 
-- The distributed inference pipeline: per-robot GP + BO with online
-  posterior sharing.
-- The ROS 2 Humble communication and sensor stack on TurtleBot3 +
-  Raspberry Pi 4 (Ubuntu 22.04 Server), with Vicon 12-camera motion
-  capture at 20 Hz for ground truth, decentralized waypoint planning, and
-  collision avoidance.
-- LoRa RF sensor integration (20 Hz, 868 MHz) with median-absolute-
-  deviation and local-neighborhood filtering to tame noisy readings.
-- The simulation harness used for the 50-agent runs.
+- The per-robot inference pipeline: Gaussian Process + Bayesian
+  Optimization, with updates shared between neighbors.
+- A small neural network that compresses sensor data to 100 points before
+  the Gaussian Process sees it. Updates went from minutes to seconds with
+  no loss in accuracy.
+- The ROS 2 stack on TurtleBot3 + Raspberry Pi 4: LoRa radio sensors,
+  Vicon motion capture, waypoint planning, and collision avoidance.
+- The simulation harness for the 50-agent runs.
 
-## Related: hardware–software co-design
-
-Building on the same platform, I designed a bi-level optimization that
-tunes the swarm's search behavior and each UAV's hardware together
-instead of one after the other. In 194 simulated avalanche-rescue
-scenarios, the co-designed system finished missions **44% faster** than a
-sequential design.
-
-## Stack
-
-ROS 2 Humble, Python, PyTorch, Gazebo, TurtleBot3, Raspberry Pi 4, LoRa,
-Vicon motion capture.
+On the same platform, I designed an optimization that tunes swarm behavior
+and drone hardware together. It finished missions 44% faster than tuning
+them one after the other, across 194 simulated avalanche-rescue scenarios.

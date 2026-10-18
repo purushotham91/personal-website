@@ -1,18 +1,17 @@
 ---
-import { getCollection, type CollectionEntry } from "astro:content";
+import type { CollectionEntry } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
-import { statusLabel, projectBlurb } from "../../lib/projects";
+import Stats from "../../components/Stats.astro";
+import { getProjects, statusLabel } from "../../lib/projects";
 
 export async function getStaticPaths() {
-  const projects = (await getCollection("projects")).sort(
-    (a, b) => (a.data.order ?? 99) - (b.data.order ?? 99),
-  );
+  const projects = await getProjects();
   return projects.map((project, i) => ({
     params: { slug: project.slug },
     props: {
       project,
-      prev: i > 0 ? projects[i - 1] : null,
-      next: i < projects.length - 1 ? projects[i + 1] : null,
+      prev: projects[i - 1] ?? null,
+      next: projects[i + 1] ?? null,
     },
   }));
 }
@@ -24,25 +23,33 @@ interface Props {
 }
 
 const { project, prev, next } = Astro.props;
+const { title, summary, role, status, stack, results, links } = project.data;
 const { Content } = await project.render();
-const description =
-  projectBlurb[project.slug] ??
-  `${project.data.title}: ${project.data.role}, ${statusLabel[project.data.status]}.`;
 ---
 
-<Layout title={`${project.data.title} · Purushotham Sirasapalli`} description={description} pageType="article">
-  <p class="crumbs">
-    <a href="/projects">← projects</a>
-    <span class="tag">{statusLabel[project.data.status]}</span>
-    <span class="tag">{project.data.role}</span>
-  </p>
-  <article>
-    <Content />
-  </article>
-  {project.data.stack && <ul class="tags">{project.data.stack.map((t) => <li>{t}</li>)}</ul>}
+<Layout title={`${title} · Purushotham Sirasapalli`} description={summary} pageType="article">
+  <section class="hero">
+    <a class="back" href="/projects">← Projects</a>
+    <h1>{title}</h1>
+    <p class="lede">{summary}</p>
+    <p class="meta">{role} · {statusLabel[status]}</p>
+    {links && (
+      <div class="actions">
+        {links.map((l) => <a class="btn" href={l.href}>{l.label} ↗</a>)}
+      </div>
+    )}
+  </section>
 
-  <nav class="pager" aria-label="Adjacent projects">
-    {prev ? <a href={`/projects/${prev.slug}`}>← {prev.data.title}</a> : <span />}
-    {next ? <a href={`/projects/${next.slug}`}>{next.data.title} →</a> : <span />}
+  {results && <Stats items={results} />}
+
+  <article class="prose">
+    <Content />
+    <h2>Stack</h2>
+    <p class="muted">{stack.join(" · ")}</p>
+  </article>
+
+  <nav class="pager" aria-label="More projects">
+    {prev ? <a href={`/projects/${prev.slug}`}><span>Previous</span>{prev.data.title}</a> : <span />}
+    {next ? <a class="next" href={`/projects/${next.slug}`}><span>Next</span>{next.data.title}</a> : <span />}
   </nav>
 </Layout>

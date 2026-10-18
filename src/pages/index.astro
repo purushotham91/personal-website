@@ -1,41 +1,52 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import { links, impact, work, experience, skills } from "../lib/profile";
+import Row from "../components/Row.astro";
+import Stats from "../components/Stats.astro";
+import { getProjects } from "../lib/projects";
+import { links, stats, experience, education, skills } from "../lib/profile";
+
+const featured = (await getProjects()).slice(0, 4);
 ---
 
 <Layout title="Purushotham Sirasapalli · Software Engineer" pageType="profile">
-  <span class="avail">available now</span>
-  <h1>Purushotham Sirasapalli</h1>
-  <p class="lede">
-    Software engineer. I make code fast on small hardware.
-    <span>Systems · performance · robotics. CS @ University at Buffalo '26.</span>
-  </p>
+  <section class="hero">
+    <h1>Purushotham Sirasapalli</h1>
+    <p class="lede">
+      Software engineer. I make code fast on small hardware, from Rust and C++
+      systems to robots and on-device ML.
+    </p>
+    <p class="meta"><span class="dot"></span>Available now · Buffalo, NY · Open to relocation</p>
+    <div class="actions">
+      <a class="btn primary" href={`mailto:${links.email}`}>Email me</a>
+      <a class="btn" href={links.resume}>Resume</a>
+      <a class="btn" href={links.linkedin}>LinkedIn</a>
+    </div>
+  </section>
 
-  <div class="ctas">
-    <a class="btn primary" href={`mailto:${links.email}`}>Email me</a>
-    <a class="btn" href={links.resume}>Resume</a>
-    <a class="btn" href={links.linkedin}>LinkedIn</a>
-  </div>
+  <Stats items={stats} />
 
-  <ul class="impact" aria-label="Results">
-    {impact.map((s) => <li><b>{s.value}</b><span>{s.label}</span></li>)}
-  </ul>
+  <section>
+    <h2>Selected work</h2>
+    <ul class="rows">
+      {featured.map((p) => (
+        <Row href={`/projects/${p.slug}`} title={p.data.title} sub={p.data.summary} meta={p.data.tech} />
+      ))}
+    </ul>
+    <a class="more" href="/projects">All projects →</a>
+  </section>
 
-  <h2>Work</h2>
-  <ul class="list">
-    {work.map((w) => (
-      <li><a href={`/projects/${w.slug}`}>{w.title}</a><span>{w.line}</span></li>
-    ))}
-  </ul>
-  <p><a href="/projects">All projects →</a></p>
+  <section>
+    <h2>Experience</h2>
+    <ul class="rows">{experience.map((r) => <Row {...r} />)}</ul>
+  </section>
 
-  <h2>Experience</h2>
-  <ul class="list">
-    {experience.map((j) => (
-      <li><strong>{j.title}</strong><span>{j.org}</span><time>{j.dates}</time></li>
-    ))}
-  </ul>
+  <section>
+    <h2>Education</h2>
+    <ul class="rows">{education.map((r) => <Row {...r} />)}</ul>
+  </section>
 
-  <h2>Skills</h2>
-  <ul class="tags">{skills.map((s) => <li>{s}</li>)}</ul>
+  <section>
+    <h2>Skills</h2>
+    <ul class="rows">{skills.map((r) => <Row {...r} />)}</ul>
+  </section>
 </Layout>
