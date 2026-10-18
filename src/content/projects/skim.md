@@ -1,6 +1,6 @@
 ---
 title: SKiM
-summary: Rebuilt the caching layer in Rust. 6× faster with 80% less memory.
+summary: Built the caching layer in Rust. 6× faster with 80% less memory.
 tech: Rust
 status: published
 role: Systems developer, caching and concurrency
@@ -23,7 +23,7 @@ built for, like NVIDIA Jetson boards.
 
 ## What I built
 
-I own the caching layer. Every step was benchmarked before the next one:
+I built the caching layer. Every step was benchmarked before the next one:
 
 1. Moved the database to SSD behind mmap, so it could run at all.
 2. Switched to Direct I/O with a dedicated I/O thread pool, so rayon
