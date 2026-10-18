@@ -10,35 +10,23 @@ const projects = (await getCollection("projects")).sort(
 
 <Layout
   title="Projects · Purushotham Sirasapalli"
-  description="Selected work in low-latency systems, bioinformatics indexing, and robotics: SKiM, Coriolis-Lite, IROS 2026 submission, Coriolis, SKiMet, RL aerial-target tracking."
+  description="Performance and systems work: SKiM's Rust caching layer (6× faster, 80% less RAM), a decentralized robot swarm, RL aerial tracking, Coriolis-Lite, SKiMet."
 >
   <h1>Projects</h1>
-
   <p class="lede">
-    Things I've built or contributed to. Each links to a longer write-up
-    with technical details.
+    Each write-up covers the constraint, what I built, and how I measured it.
   </p>
 
-  <ul class="project-list">
-    {
-      projects.map((p) => (
-        <li>
-          <div class="row">
-            <a href={`/projects/${p.slug}`}>{p.data.title}</a>
-            <span class="meta">
-              {p.data.role} · {statusLabel[p.data.status]}
-            </span>
-          </div>
-          <p class="desc">{projectBlurb[p.slug] ?? ""}</p>
-          {p.data.stack && (
-            <ul class="stack">
-              {p.data.stack.map((t) => (
-                <li>{t}</li>
-              ))}
-            </ul>
-          )}
-        </li>
-      ))
-    }
+  <ul class="projects">
+    {projects.map((p) => (
+      <li>
+        <a class="card" href={`/projects/${p.slug}`}>
+          <h3>{p.data.title}</h3>
+          <p class="meta">{p.data.role} · {statusLabel[p.data.status]}</p>
+          <p>{projectBlurb[p.slug] ?? ""}</p>
+          {p.data.stack && <ul class="tags">{p.data.stack.map((t) => <li>{t}</li>)}</ul>}
+        </a>
+      </li>
+    ))}
   </ul>
 </Layout>

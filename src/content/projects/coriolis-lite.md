@@ -2,7 +2,7 @@
 title: Coriolis-Lite
 status: shipped
 role: Primary author
-order: 2
+order: 4
 stack: ["C++20", "sdsl-lite", "FM-Index", "DNAsbt", "CMake", "ARM + x86"]
 ---
 
@@ -45,7 +45,7 @@ Desai, Troy Richardson.
 
 ## Status
 
-Shipped and in active use within the SCORE Lab metagenomics pipeline as
+Shipped and used within the SCORE Lab metagenomics pipeline as
 the FM-Index-based companion to Coriolis.
 
 ## Links

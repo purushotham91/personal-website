@@ -2,7 +2,7 @@
 title: Coriolis
 status: shipped
 role: Contributor (coriolis-ovw)
-order: 4
+order: 6
 stack: ["C++20", "DNAsbt", "Intel TBB", "CMake", "ARM + x86"]
 ---
 

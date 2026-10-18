@@ -1,106 +1,123 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import { getCollection } from "astro:content";
-import { projectBlurb, statusLabel, headlineStats } from "../lib/projects";
+import { projectBlurb, statusLabel } from "../lib/projects";
+import { links, headline, quickFacts, impact, principles, caseStudies, experience, skills } from "../lib/profile";
 
 const projects = (await getCollection("projects")).sort(
   (a, b) => (a.data.order ?? 99) - (b.data.order ?? 99),
 );
+
+const pct = (n: number, max: number) => `${Math.max(2, Math.round((n / max) * 100))}%`;
 ---
 
-<Layout title="Purushotham Sirasapalli" pageType="profile">
-  <span class="pill-available">open to roles · available june 2026</span>
-
+<Layout title="Purushotham Sirasapalli · Software Engineer" pageType="profile">
+  <span class="avail">open to full-time roles · available now</span>
   <h1>Purushotham Sirasapalli</h1>
+  <p class="eyebrow">{headline}</p>
 
-  <p class="lede">
-    CS + Math at the University at Buffalo. Robotics and systems researcher.
-    Graduating May 2026.
+  <p class="lede" style="margin-top:1rem">
+    I make software fast on hardware that shouldn't be able to run it. That
+    has meant a DNA classifier that went <strong>6× faster with 80% less RAM</strong>,
+    a robot swarm doing Bayesian inference on Raspberry Pis, and a learned
+    controller that tracks targets <strong>5× faster</strong> than the PID
+    controller it replaced. I profile first, then change the data structure.
   </p>
 
-  <p>
-    I build systems that push computation to the edge: from a
-    metagenomic classifier that indexes the full Archaeal, Bacterial,
-    Fungal, and Viral NCBI catalogs (17&nbsp;GB on disk) and classifies
-    in 800&nbsp;MB of RAM, to decentralized swarm robots localizing
-    signal sources without a central coordinator. I care about making
-    algorithms work under real hardware constraints. Open to new-grad
-    roles in SWE, robotics, performance engineering, or HFT.
-  </p>
+  <dl class="facts">
+    {quickFacts.map((f) => (<><dt>{f.label}</dt><dd>{f.value}</dd></>))}
+  </dl>
 
-  <div class="cta-row">
-    <a class="cta cta-primary" href="mailto:purusirasap@gmail.com">
-      get in touch
-    </a>
-    <a class="cta" href="/resume.pdf" target="_blank" rel="noopener">
-      resume (pdf)
-    </a>
-    <a class="cta" href="/projects">browse projects</a>
+  <div class="ctas">
+    <a class="btn primary" href={`mailto:${links.email}`}>Email me</a>
+    <a class="btn" href={links.resume}>Resume (PDF)</a>
+    <a class="btn" href={links.linkedin}>LinkedIn</a>
   </div>
 
-  <p class="now">
-    <span class="now-label">Now</span> Building SKiMet's gRPC server/client
-    framework · awaiting IROS 2026 review · open to new-grad roles
-    starting June 2026.
+  <ul class="impact" aria-label="Headline results">
+    {impact.map((s) => (
+      <li><b>{s.value}</b><span>{s.label}</span><small>{s.context}</small></li>
+    ))}
+  </ul>
+
+  <h2>How I work</h2>
+  <ol class="principles">
+    {principles.map((p) => (<li><h3>{p.title}</h3><p>{p.body}</p></li>))}
+  </ol>
+
+  <h2>Bottlenecks I've removed</h2>
+  <p class="sub">Each one: the constraint, what was actually slow, what I changed, and the measured result.</p>
+  {caseStudies.map((c) => {
+    const b = c.bars;
+    const max = b ? Math.max(b.before, b.after) : 1;
+    return (
+      <section class="case">
+        <header>
+          <h3>{c.title}</h3>
+          <a class="mono" href={`/projects/${c.slug}`}>write-up →</a>
+        </header>
+        <dl>
+          <dt>Constraint</dt><dd>{c.constraint}</dd>
+          <dt>Bottleneck</dt><dd>{c.bottleneck}</dd>
+          <dt>Fix</dt><dd>{c.fix}</dd>
+          <dt>Result</dt><dd class="res">{c.result}</dd>
+        </dl>
+        {b && (
+          <div class="bars" role="img" aria-label={`${b.label}: ${b.beforeText} before, ${b.afterText} after`}>
+            <div class="bar"><span>before</span><i style={`width:${pct(b.before, max)}`}></i><span>{b.beforeText}</span></div>
+            <div class="bar after"><span>after</span><i style={`width:${pct(b.after, max)}`}></i><span>{b.afterText}</span></div>
+          </div>
+        )}
+      </section>
+    );
+  })}
+
+  <h2>Experience</h2>
+  {experience.map((j) => (
+    <section class="job">
+      <div class="when">{j.dates}<br />{j.where}</div>
+      <div>
+        <h3>{j.title}</h3>
+        <p class="org">{j.org}</p>
+        <ul>{j.bullets.map((b) => <li set:html={b} />)}</ul>
+        <ul class="tags">{j.tags.map((t) => <li>{t}</li>)}</ul>
+      </div>
+    </section>
+  ))}
+
+  <h2>Projects</h2>
+  <ul class="projects">
+    {projects.map((p) => (
+      <li>
+        <a class="card" href={`/projects/${p.slug}`}>
+          <h3>{p.data.title}</h3>
+          <p class="meta">{p.data.role} · {statusLabel[p.data.status]}</p>
+          <p>{projectBlurb[p.slug] ?? ""}</p>
+          {p.data.stack && <ul class="tags">{p.data.stack.slice(0, 4).map((t) => <li>{t}</li>)}</ul>}
+        </a>
+      </li>
+    ))}
+  </ul>
+
+  <h2>Skills</h2>
+  <dl class="skills">
+    {skills.map((s) => (<><dt>{s.group}</dt><dd>{s.items.join(" · ")}</dd></>))}
+  </dl>
+
+  <h2>Education</h2>
+  <p>
+    <strong>University at Buffalo</strong>: B.S. Computer Science, minor in
+    Mathematics, GPA 3.50. Aug 2022 – May 2026.
   </p>
 
-  <ul class="stats">
-    {
-      headlineStats.map((s) => (
-        <li>
-          <span class="value">{s.value}</span>
-          <span class="label">{s.label}</span>
-        </li>
-      ))
-    }
-  </ul>
-
-  <h2>Selected work</h2>
-
-  <ul class="project-list">
-    {
-      projects.map((p) => (
-        <li>
-          <div class="row">
-            <a href={`/projects/${p.slug}`}>{p.data.title}</a>
-            <span class="meta">
-              {p.data.role} · {statusLabel[p.data.status]}
-            </span>
-          </div>
-          <p class="desc">{projectBlurb[p.slug] ?? ""}</p>
-          {p.data.stack && (
-            <ul class="stack">
-              {p.data.stack.map((t) => (
-                <li>{t}</li>
-              ))}
-            </ul>
-          )}
-        </li>
-      ))
-    }
-  </ul>
-
-  <h2>Contact</h2>
-  <ul class="link-rows">
-    <li>
-      <span class="label">Email</span>
-      <a href="mailto:purusirasap@gmail.com">purusirasap@gmail.com</a>
-    </li>
-    <li>
-      <span class="label">GitHub</span>
-      <a href="https://github.com/purushotham91"
-        >github.com/purushotham91</a
-      >
-    </li>
-    <li>
-      <span class="label">GitLab</span>
-      <a href="https://gitlab.com/puru_s">gitlab.com/puru_s</a>
-    </li>
-    <li>
-      <span class="label">LinkedIn</span>
-      <a href="https://linkedin.com/in/puru-sirasapalli"
-        >linkedin.com/in/puru-sirasapalli</a
-      >
-    </li>
-  </ul>
+  <section class="contact">
+    <h2>Hiring for systems, embedded, performance, robotics, or ML infra?</h2>
+    <p>I'm looking for full-time new-grad roles and can start now. Email is the fastest way to reach me.</p>
+    <ul class="rows">
+      <li><span>Email</span><a href={`mailto:${links.email}`}>{links.email}</a></li>
+      <li><span>LinkedIn</span><a href={links.linkedin}>linkedin.com/in/puru-sirasapalli</a></li>
+      <li><span>GitHub</span><a href={links.github}>github.com/purushotham91</a></li>
+      <li><span>GitLab</span><a href={links.gitlab}>gitlab.com/puru_s</a></li>
+    </ul>
+  </section>
 </Layout>

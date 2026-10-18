@@ -4,21 +4,9 @@ import Layout from "../layouts/Layout.astro";
 
 <Layout title="404 · Not Found" noIndex={true}>
   <h1>404</h1>
-  <p class="lede">
-    The page you're looking for isn't here.
-  </p>
   <pre><code>$ ls /
-home  projects  contact  resume.pdf
-$ cat <span id="path">/&lt;requested-path&gt;</span>
-cat: No such file or directory.<span class="cursor"></span>
-</code></pre>
-  <p>
-    Try the <a href="/">home page</a> or jump straight to a
-    <a href="/projects">project</a>.
-  </p>
+projects  contact  resume.pdf
+$ cat ./this-page
+cat: No such file or directory</code></pre>
+  <p>Try the <a href="/">home page</a> or the <a href="/projects">projects</a>.</p>
 </Layout>
-
-<script is:inline>
-  const pathEl = document.getElementById("path");
-  if (pathEl) pathEl.textContent = window.location.pathname;
-</script>

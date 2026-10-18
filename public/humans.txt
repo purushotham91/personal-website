@@ -10,7 +10,7 @@
   Built with: Astro
   Hosted on: Cloudflare Pages
   Source: github.com/purushotham91/personal_website
-  Last update: 2026/04
+  Last update: 2026/10
   Standards: HTML5, CSS3
-  Components: hand-rolled
+  Components: hand-rolled, zero client JS, every page under 14 KB compressed
   Software: VS Code, vim

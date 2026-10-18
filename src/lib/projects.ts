@@ -1,15 +1,15 @@
 export const projectBlurb: Record<string, string> = {
-  skimet:
-    "Distributed metagenomic classifier aimed at privacy-preserving deployment. I built the C++23 gRPC server/client framework with an Intel TBB pipeline.",
-  "coriolis-lite":
-    "C++20 metagenomic classifier on the FM-Index, primary author. NSF-supported. Targets mobile and edge devices.",
-  skim: "Memory-efficient ONT metagenomic classifier in Rust, published in Bioinformatics 2025. I built the external-memory caching subsystem: classifies against the full 17 GB Archaeal/Bacterial/Fungal/Viral NCBI reference DB in ~800 MB of RAM; 6× faster than mmap on Jetson.",
-  coriolis:
-    "Full metagenomic classifier with DNAsbt index + Intel TBB pipeline. I contributed to the coriolis-ovw subsystem.",
-  "iros-swarm":
-    "Hardware-software platform for evaluating multi-robot signal-source localization indoors. 4 TurtleBots + 50 sim agents. Submitted to IROS 2026.",
+  skim: "Rust DNA classifier published in Bioinformatics (2025). I rebuilt its caching layer: 6× faster, 4 GB → 800 MB RAM on a 63M-key benchmark.",
+  "swarm-localization":
+    "Robot swarm that finds a radio source with no central coordinator. 4 physical TurtleBot3s + 50 simulated agents, 83% success over 99 physical runs.",
   "rl-aerial-tracking":
-    "End-to-end RL policy in PyTorch + ROS 2 + Gazebo, 5× over PID baselines at 10 m/s target velocity.",
+    "RL policy for vision-based aerial tracking. Stable at 10 m/s, up from 2 m/s with the previous PID controller.",
+  "coriolis-lite":
+    "C++20 exact-match search over compressed FM-indexes, so DNA classification fits on mobile and edge devices. Primary author.",
+  skimet:
+    "Distributed DNA classifier. I built the C++23 gRPC client/server framework and the Intel TBB pipeline that serves SKiM's index.",
+  coriolis:
+    "Low-memory DNA classifier for edge devices built on external-memory data structures. I contributed the coriolis-ovw subsystem.",
 };
 
 export const statusLabel: Record<string, string> = {
@@ -18,10 +18,3 @@ export const statusLabel: Record<string, string> = {
   published: "published",
   archived: "archived",
 };
-
-export const headlineStats: { value: string; label: string }[] = [
-  { value: "17 GB → 800 MB", label: "in-memory DB → cached classifier RAM" },
-  { value: "6×", label: "faster on Jetson vs mmap" },
-  { value: "5×", label: "over PID at 10 m/s" },
-  { value: "50", label: "agents in simulation" },
-];

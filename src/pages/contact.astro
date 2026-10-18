@@ -1,48 +1,31 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import { links } from "../lib/profile";
 ---
 
 <Layout
   title="Contact · Purushotham Sirasapalli"
-  description="Email, GitHub, GitLab, and LinkedIn for Purushotham Sirasapalli. Available June 2026 for full-time engineering roles."
+  description="Email, LinkedIn, GitHub, and GitLab for Purushotham Sirasapalli. Open to full-time systems, embedded, performance, robotics, and ML infra roles."
 >
   <h1>Contact</h1>
-
   <p class="lede">
-    The fastest way to reach me is email. Recruiters and hiring managers,
-    please include the role title in the subject line.
+    Email is the fastest way to reach me. If you're a recruiter or hiring
+    manager, putting the role title in the subject line helps.
   </p>
 
-  <ul class="link-rows">
-    <li>
-      <span class="label">Email</span>
-      <a href="mailto:purusirasap@gmail.com">purusirasap@gmail.com</a>
-    </li>
-    <li>
-      <span class="label">GitHub</span>
-      <a href="https://github.com/purushotham91"
-        >github.com/purushotham91</a
-      >
-    </li>
-    <li>
-      <span class="label">GitLab</span>
-      <a href="https://gitlab.com/puru_s">gitlab.com/puru_s</a>
-    </li>
-    <li>
-      <span class="label">LinkedIn</span>
-      <a href="https://linkedin.com/in/puru-sirasapalli"
-        >linkedin.com/in/puru-sirasapalli</a
-      >
-    </li>
-    <li>
-      <span class="label">Resume</span>
-      <a href="/resume.pdf" target="_blank" rel="noopener">PDF</a>
-    </li>
+  <ul class="rows">
+    <li><span>Email</span><a href={`mailto:${links.email}`}>{links.email}</a></li>
+    <li><span>LinkedIn</span><a href={links.linkedin}>linkedin.com/in/puru-sirasapalli</a></li>
+    <li><span>GitHub</span><a href={links.github}>github.com/purushotham91</a></li>
+    <li><span>GitLab</span><a href={links.gitlab}>gitlab.com/puru_s</a></li>
+    <li><span>Resume</span><a href={links.resume}>PDF, one page</a></li>
   </ul>
 
   <h2>What I'm looking for</h2>
   <p>
-    Full-time engineering roles in SWE, robotics, performance engineering,
-    or HFT. Available June 2026.
+    Full-time new-grad engineering roles in systems, embedded, performance,
+    robotics/autonomy, or ML infrastructure. I can start now and I'm open to
+    relocating or working remotely. Preferred: New York, Boston, Buffalo, or
+    remote (US).
   </p>
 </Layout>

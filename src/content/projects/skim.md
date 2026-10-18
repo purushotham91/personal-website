@@ -1,79 +1,71 @@
 ---
 title: SKiM
-status: shipped
-role: Contributor (concurrency and caching)
+status: published
+role: Systems developer (concurrency and caching)
 order: 1
-stack: ["Rust", "Rayon", "external-memory caching", "ONT reads"]
+stack: ["Rust", "Tokio", "rayon", "minimal perfect hashing", "external-memory caching"]
 ---
 
 # SKiM
 
-A memory-efficient metagenomic classifier for Oxford Nanopore (ONT)
-reads, published in *Bioinformatics* (2025). Written in **Rust**.
-SKiM uses short k-mers (k=15 or k=16) plus statistical correction
-to classify error-prone long reads against the full microbial
-reference catalog inside a tight memory envelope.
+A memory-efficient classifier that identifies which microbes are present
+in a DNA sample sequenced on an Oxford Nanopore device. Published in
+*Bioinformatics* (2025). Written in **Rust**.
+
+## Results
+
+- **6× faster** caching layer than the previous mmap-based design.
+- **80% less RAM**: 4&nbsp;GB → 800&nbsp;MB on a 63M-key benchmark.
+- Runs on resource-constrained hardware such as NVIDIA Jetson boards.
 
 ## My contribution
 
-I built the **concurrency and caching subsystem** that makes SKiM
-run on resource-constrained hardware like NVIDIA Jetson.
-The high-level goal: classify against a full microbial reference
-DB (~17&nbsp;GB) on a device with one or two orders of magnitude
-less RAM than the in-memory mode would need.
+I own the **caching and concurrency subsystem**: the part that lets SKiM
+classify against a large reference database on a machine with far less
+RAM than the database needs.
 
-Specifically:
+I got there in steps, measuring after each one:
 
-- **External-memory cache layer** (`skim-convert-db`,
-  `skim-cache-classify`). The cached database lives on disk as a
-  page-aligned header + RLE-compressed data file, and the classifier
-  pages it in on demand instead of loading the full DB into RAM.
-- **Tunable cache page size** (`-p PAGE_SIZE`) so the cache layout can
-  be matched to the target storage device's page size. This
-  measurably improves throughput on SSDs vs spinning disks vs Jetson's
-  eMMC; the right value can be discovered from `getconf PAGE_SIZE` on
-  the target.
-- **Watch-directory mode** (`-w` / `-t`) for live classification.
-  `skim-classify` watches an input directory and processes new FASTA /
-  FASTQ files the moment a basecaller (e.g., `dorado`) writes them,
-  giving an end-to-end real-time pipeline from sequencer to
-  taxonomic call.
-- **~800&nbsp;MB classification footprint.** With caching, SKiM
-  classifies against the full Archaeal/Bacterial/Fungal/Viral NCBI
-  reference in roughly 800&nbsp;MB of RAM, versus ~17&nbsp;GB for the
-  in-memory mode.
-- **6&times; speedup on Jetson** over the mmap-based baseline.
-- **Cross-platform.** The cache subsystem builds cleanly on macOS,
-  Linux, ARM, and x86.
+1. **Baseline.** Moved the database from RAM to SSD with mmap, so it
+   could run at all on small machines.
+2. **Direct I/O + an I/O thread pool**, so rayon worker threads stop
+   blocking on disk reads.
+3. **Key-level deduplication** so the same key is never fetched twice
+   in flight.
+4. **Minimal perfect hashing** in place of a standard hash map. On a
+   63M-key reference database this removes per-key hash-table overhead
+   entirely.
+5. **Non-blocking cache library.** The cache crate we started with used
+   a bounded channel that left hundreds of threads waiting; switching to
+   a non-blocking cache library removed that bottleneck.
+
+The end result is 6× faster than my own mmap baseline while using
+roughly a fifth of the memory.
+
+Other pieces I built:
+
+- **Tunable cache page size** (`-p PAGE_SIZE`), so the on-disk layout can
+  match the target device's storage (SSD, spinning disk, Jetson eMMC).
+- **Watch-directory mode** (`-w` / `-t`): `skim-classify` picks up new
+  FASTA/FASTQ files the moment the basecaller writes them, for a
+  real-time pipeline from sequencer to result.
+- Cross-platform builds on macOS, Linux, ARM, and x86.
 
 ## What SKiM is
 
-SKiM = **S**hort **K**-mers **i**n **M**etagenomics. A Rust
-implementation targeted at ONT (long, error-prone) reads. Most
-metagenomic classifiers are tuned for short Illumina reads; SKiM
-uses short k-mers and statistical correction to classify ONT data
-accurately while staying drastically smaller in memory than the
-alternatives.
-
-The tool ships as a set of binaries covering the index-construction
-and classification phases: `skim-build`, `skim-classify`,
-`skim-cache-classify`, `skim-pairwise-distances`, `skim-order`,
-`skim-convert-db`, `skim-file2taxid`. Output is Kraken2-compatible,
-so SKiM drops into existing taxonomic-classification pipelines.
+SKiM = **S**hort **K**-mers **i**n **M**etagenomics. Most classifiers are
+tuned for short, clean Illumina reads. SKiM uses short k-mers (DNA
+substrings of length 15–16) plus statistical correction to handle long,
+error-prone Nanopore reads accurately in a small memory envelope. Output
+is Kraken2-compatible, so it drops into existing pipelines.
 
 ## Authors
 
-- Trevor Schneggenburger: development, algorithms design
+- Trevor Schneggenburger: development, algorithm design
 - **Purushotham Sirasapalli**: systems development, concurrency and caching
 - Jaroslaw Zola: project design and supervision
 
 SCoRe Research Group, University at Buffalo.
-
-## Stack
-
-Rust (Cargo, 1.88+), Rayon for parallelism
-(`RAYON_NUM_THREADS`), HyperLogLog sketches for pairwise distances,
-custom external-memory cache layer.
 
 ## Links
 
