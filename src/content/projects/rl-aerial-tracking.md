@@ -1,19 +1,19 @@
 ---
-title: RL Aerial Tracking
-summary: A learned controller that tracks fast aerial targets at 10 m/s.
+title: AI Drone Tracking
+summary: A learned controller that keeps up with targets 5× faster than the old one.
 tech: PyTorch
 status: shipped
 role: Primary author
 order: 3
 stack: ["PyTorch", "Stable-Baselines3", "OpenAI Gym", "Gazebo", "ROS 2", "Python"]
 results:
-  - { value: "10 m/s", label: "stable tracking speed" }
-  - { value: "5×", label: "faster than the PID controller" }
+  - { value: "5×", label: "faster targets than before" }
+  - { value: "2 → 10 m/s", label: "target speed it can follow" }
 ---
 
 ## Problem
 
-The lab's PID controller lost vision-based tracking of aerial targets above
+The lab's old controller (a standard PID loop) lost vision-based tracking of aerial targets above
 2 m/s. Its linear gains stop holding at higher speeds.
 
 ## What I built

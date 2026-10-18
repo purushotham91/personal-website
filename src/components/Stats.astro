@@ -1,11 +1,12 @@
 ---
 interface Props {
   items: { value: string; label: string }[];
+  grid?: boolean;
 }
 
-const { items } = Astro.props;
+const { items, grid = false } = Astro.props;
 ---
 
-<ul class="stats">
+<ul class:list={["stats", { grid }]}>
   {items.map((s) => <li><b>{s.value}</b><span>{s.label}</span></li>)}
 </ul>

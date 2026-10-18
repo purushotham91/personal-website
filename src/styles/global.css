@@ -95,6 +95,7 @@ h2 {
   display: grid; grid-template-columns: repeat(auto-fit, minmax(7.5rem, 1fr)); gap: 1.25rem 1.5rem;
   list-style: none; padding: 1.25rem 1.5rem; background: var(--surface); border-radius: 0.75rem;
 }
+.stats.grid { grid-template-columns: repeat(2, 1fr); }
 .stats b { display: block; font-size: 1.625rem; line-height: 1.1; font-weight: 700; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
 .stats span { display: block; margin-top: 0.375rem; font-size: 0.8125rem; line-height: 1.4; color: var(--muted); }
 

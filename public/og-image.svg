@@ -7,10 +7,10 @@
     <text x="96" y="352" fill="#6b6b73" font-size="32">Software engineer · systems, performance, robotics</text>
     <rect x="96" y="410" width="1008" height="128" rx="20" fill="#f4f4f3"/>
     <g fill="#18181b" font-size="44" font-weight="700">
-      <text x="136" y="475">6×</text><text x="388" y="475">80%</text><text x="640" y="475">10 m/s</text><text x="892" y="475">83%</text>
+      <text x="136" y="475">6×</text><text x="388" y="475">80%</text><text x="640" y="475">5×</text><text x="892" y="475">83%</text>
     </g>
     <g fill="#6b6b73" font-size="21">
-      <text x="136" y="510">faster Rust cache</text><text x="388" y="510">less memory</text><text x="640" y="510">RL tracking speed</text><text x="892" y="510">swarm success</text>
+      <text x="136" y="510">faster DNA analysis</text><text x="388" y="510">less memory</text><text x="640" y="510">faster drone tracking</text><text x="892" y="510">robot test success</text>
     </g>
     <circle cx="104" cy="583" r="7" fill="#16a34a"/>
     <text x="122" y="590" fill="#6b6b73" font-size="21">Available now · purusirasapalli.com</text>

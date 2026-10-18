@@ -10,10 +10,10 @@ export const links = {
 };
 
 export const stats = [
-  { value: "6×", label: "faster Rust cache" },
-  { value: "80%", label: "less memory" },
-  { value: "10 m/s", label: "RL tracking speed" },
-  { value: "83%", label: "swarm success" },
+  { value: "6×", label: "faster DNA analysis, in Rust" },
+  { value: "80%", label: "less memory, same workload" },
+  { value: "5×", label: "faster drone tracking than before" },
+  { value: "83%", label: "success in 99 real robot tests" },
 ];
 
 export const experience = [
