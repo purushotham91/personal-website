@@ -60,7 +60,7 @@ const og = new URL("/og-image.jpg", Astro.site);
     <a href="#content" class="skip">Skip to content</a>
     <div class="page">
       <nav class="site" aria-label="Primary">
-        <a href="/" class="home" aria-current={path === "/" ? "page" : undefined}>purushotham sirasapalli</a>
+        <a href="/" class="home" aria-current={path === "/" ? "page" : undefined}><span class="full">purushotham </span>sirasapalli</a>
         <a href="/projects" aria-current={isActive("/projects") ? "page" : undefined}>projects</a>
         <a href={links.resume}>resume</a>
         <a href="/contact" aria-current={isActive("/contact") ? "page" : undefined}>contact</a>
@@ -69,7 +69,7 @@ const og = new URL("/og-image.jpg", Astro.site);
         <slot />
       </main>
       <footer class="site">
-        <span>This page: __WIRE__ compressed · 0 JS · 1 request · one round trip</span>
+        <span>© {new Date().getFullYear()} Purushotham Sirasapalli</span>
         <span>
           <a href={links.github}>github</a> · <a href={links.gitlab}>gitlab</a> ·
           <a href={links.linkedin}>linkedin</a> ·

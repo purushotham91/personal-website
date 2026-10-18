@@ -1,123 +1,41 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import { getCollection } from "astro:content";
-import { projectBlurb, statusLabel } from "../lib/projects";
-import { links, headline, quickFacts, impact, principles, caseStudies, experience, skills } from "../lib/profile";
-
-const projects = (await getCollection("projects")).sort(
-  (a, b) => (a.data.order ?? 99) - (b.data.order ?? 99),
-);
-
-const pct = (n: number, max: number) => `${Math.max(2, Math.round((n / max) * 100))}%`;
+import { links, impact, work, experience, skills } from "../lib/profile";
 ---
 
 <Layout title="Purushotham Sirasapalli · Software Engineer" pageType="profile">
-  <span class="avail">open to full-time roles · available now</span>
+  <span class="avail">available now</span>
   <h1>Purushotham Sirasapalli</h1>
-  <p class="eyebrow">{headline}</p>
-
-  <p class="lede" style="margin-top:1rem">
-    I make software fast on hardware that shouldn't be able to run it. That
-    has meant a DNA classifier that went <strong>6× faster with 80% less RAM</strong>,
-    a robot swarm doing Bayesian inference on Raspberry Pis, and a learned
-    controller that tracks targets <strong>5× faster</strong> than the PID
-    controller it replaced. I profile first, then change the data structure.
+  <p class="lede">
+    Software engineer. I make code fast on small hardware.
+    <span>Systems · performance · robotics. CS @ University at Buffalo '26.</span>
   </p>
-
-  <dl class="facts">
-    {quickFacts.map((f) => (<><dt>{f.label}</dt><dd>{f.value}</dd></>))}
-  </dl>
 
   <div class="ctas">
     <a class="btn primary" href={`mailto:${links.email}`}>Email me</a>
-    <a class="btn" href={links.resume}>Resume (PDF)</a>
+    <a class="btn" href={links.resume}>Resume</a>
     <a class="btn" href={links.linkedin}>LinkedIn</a>
   </div>
 
-  <ul class="impact" aria-label="Headline results">
-    {impact.map((s) => (
-      <li><b>{s.value}</b><span>{s.label}</span><small>{s.context}</small></li>
-    ))}
+  <ul class="impact" aria-label="Results">
+    {impact.map((s) => <li><b>{s.value}</b><span>{s.label}</span></li>)}
   </ul>
 
-  <h2>How I work</h2>
-  <ol class="principles">
-    {principles.map((p) => (<li><h3>{p.title}</h3><p>{p.body}</p></li>))}
-  </ol>
-
-  <h2>Bottlenecks I've removed</h2>
-  <p class="sub">Each one: the constraint, what was actually slow, what I changed, and the measured result.</p>
-  {caseStudies.map((c) => {
-    const b = c.bars;
-    const max = b ? Math.max(b.before, b.after) : 1;
-    return (
-      <section class="case">
-        <header>
-          <h3>{c.title}</h3>
-          <a class="mono" href={`/projects/${c.slug}`}>write-up →</a>
-        </header>
-        <dl>
-          <dt>Constraint</dt><dd>{c.constraint}</dd>
-          <dt>Bottleneck</dt><dd>{c.bottleneck}</dd>
-          <dt>Fix</dt><dd>{c.fix}</dd>
-          <dt>Result</dt><dd class="res">{c.result}</dd>
-        </dl>
-        {b && (
-          <div class="bars" role="img" aria-label={`${b.label}: ${b.beforeText} before, ${b.afterText} after`}>
-            <div class="bar"><span>before</span><i style={`width:${pct(b.before, max)}`}></i><span>{b.beforeText}</span></div>
-            <div class="bar after"><span>after</span><i style={`width:${pct(b.after, max)}`}></i><span>{b.afterText}</span></div>
-          </div>
-        )}
-      </section>
-    );
-  })}
+  <h2>Work</h2>
+  <ul class="list">
+    {work.map((w) => (
+      <li><a href={`/projects/${w.slug}`}>{w.title}</a><span>{w.line}</span></li>
+    ))}
+  </ul>
+  <p><a href="/projects">All projects →</a></p>
 
   <h2>Experience</h2>
-  {experience.map((j) => (
-    <section class="job">
-      <div class="when">{j.dates}<br />{j.where}</div>
-      <div>
-        <h3>{j.title}</h3>
-        <p class="org">{j.org}</p>
-        <ul>{j.bullets.map((b) => <li set:html={b} />)}</ul>
-        <ul class="tags">{j.tags.map((t) => <li>{t}</li>)}</ul>
-      </div>
-    </section>
-  ))}
-
-  <h2>Projects</h2>
-  <ul class="projects">
-    {projects.map((p) => (
-      <li>
-        <a class="card" href={`/projects/${p.slug}`}>
-          <h3>{p.data.title}</h3>
-          <p class="meta">{p.data.role} · {statusLabel[p.data.status]}</p>
-          <p>{projectBlurb[p.slug] ?? ""}</p>
-          {p.data.stack && <ul class="tags">{p.data.stack.slice(0, 4).map((t) => <li>{t}</li>)}</ul>}
-        </a>
-      </li>
+  <ul class="list">
+    {experience.map((j) => (
+      <li><strong>{j.title}</strong><span>{j.org}</span><time>{j.dates}</time></li>
     ))}
   </ul>
 
   <h2>Skills</h2>
-  <dl class="skills">
-    {skills.map((s) => (<><dt>{s.group}</dt><dd>{s.items.join(" · ")}</dd></>))}
-  </dl>
-
-  <h2>Education</h2>
-  <p>
-    <strong>University at Buffalo</strong>: B.S. Computer Science, minor in
-    Mathematics, GPA 3.50. Aug 2022 – May 2026.
-  </p>
-
-  <section class="contact">
-    <h2>Hiring for systems, embedded, performance, robotics, or ML infra?</h2>
-    <p>I'm looking for full-time new-grad roles and can start now. Email is the fastest way to reach me.</p>
-    <ul class="rows">
-      <li><span>Email</span><a href={`mailto:${links.email}`}>{links.email}</a></li>
-      <li><span>LinkedIn</span><a href={links.linkedin}>linkedin.com/in/puru-sirasapalli</a></li>
-      <li><span>GitHub</span><a href={links.github}>github.com/purushotham91</a></li>
-      <li><span>GitLab</span><a href={links.gitlab}>gitlab.com/puru_s</a></li>
-    </ul>
-  </section>
+  <ul class="tags">{skills.map((s) => <li>{s}</li>)}</ul>
 </Layout>

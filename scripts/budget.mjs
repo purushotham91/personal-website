@@ -1,8 +1,7 @@
 // Post-build performance budget. Every HTML page must fit in the first TCP
 // round trip: initcwnd = 10 segments × 1460 B ≈ 14.6 KB, so budget 14 KB
 // compressed (gzip -9 as a conservative stand-in for Cloudflare's brotli).
-// Replaces the __WIRE__ placeholder with the page's measured size.
-import { readdir, readFile, writeFile } from "node:fs/promises";
+import { readdir, readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { gzipSync } from "node:zlib";
 
@@ -22,12 +21,7 @@ const kb = (n) => `${(n / 1024).toFixed(1)} KB`;
 
 let failed = false;
 for await (const file of htmlFiles(DIST)) {
-  let html = await readFile(file, "utf8");
-  // Size depends on the label we insert, so settle it in two passes.
-  let size = gz(html.replace("__WIRE__", "00.0 KB"));
-  html = html.replace("__WIRE__", kb(size));
-  size = gz(html);
-  await writeFile(file, html);
+  const size = gz(await readFile(file));
   const ok = size <= BUDGET;
   failed ||= !ok;
   console.log(`${ok ? "ok  " : "FAIL"} ${kb(size).padStart(8)}  ${file.slice(DIST.length)}`);
